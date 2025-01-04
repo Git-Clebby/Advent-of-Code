@@ -4,12 +4,11 @@ function find-houses {
   [CmdletBinding()]
   param (
     [Parameter(ValueFromPipeline = $true, Mandatory = $true)][string]$data,
-    $visited = @{},
+    $visited = @(),
     $coord = @{x=0; y=0}
   )
   # Starting Point
-  $visited."0,0" = 1
-
+  $visited += "0,0"
   foreach($dir in $in.ToCharArray()) {
     switch ($dir) {
       '^' { $coord.y += 1 }
@@ -17,9 +16,10 @@ function find-houses {
       '<' { $coord.x -= 1 }
       'v' { $coord.y -= 1 }
     }
-    $visited."$($coord.x),$($coord.y)" = 1
+    $visited += "$($coord.x),$($coord.y)"
   }
-    return $visited.Count
+  $unique = ($visited | Select-Object -Unique ).Count
+  return $unique
 }
 
 $houses = find-houses -data $in
