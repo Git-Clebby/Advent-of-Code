@@ -1,4 +1,5 @@
-$string = 'abcdef609043'
+$nums = @(1..1000000)
+$string = 'iwrupvqb'
 
 function find-hash-beginning {
   param(
@@ -14,4 +15,12 @@ function find-hash-beginning {
   return $hashBeg
 }
 
-$out = find-hash-beginning -in $string
+foreach($number in $nums) {
+  $loopString = $string+$($number.ToString())
+  $result = find-hash-beginning -in $loopString
+  Write-Host $result
+  if($result -eq '00000') {
+    Write-Host $loopString
+    exit
+  }
+}
